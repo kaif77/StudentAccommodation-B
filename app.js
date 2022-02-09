@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
-
+// *import json
 app.use(express.json());
 
-//root route
+// !root route
 app.get("/", (req, res) => {
-  res.send("Wello World");
+  res.send("Hello World");
 });
 
-//import user routers
+// ?import user routers
 const userRouters = require("./routers/user.route");
 
 app.use("/api/user", userRouters);
