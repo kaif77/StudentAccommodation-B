@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { canUpdateUser } = require("../permissions/user.permissions");
 
 module.exports = {
   authUser: (req, res, next) => {
@@ -28,19 +27,17 @@ module.exports = {
 
   authRole: (role) => {
     return (req, res, next) => {
-      if (req.decoded.result.role !== role) {
+      let valid = false;
+      role.forEach((element) => {
+        if (element === req.decoded.result.role) {
+          valid = true;
+        }
+      });
+      if (!valid) {
         res.status(401);
         return res.send("Not Allowed");
       }
       next();
     };
-  },
-
-  authPermission: (req, res, next) => {
-    if (!canUpdateUser(req)) {
-      res.status(401);
-      return res.send("Not Allowed");
-    }
-    next();
   },
 };
