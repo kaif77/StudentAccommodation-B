@@ -77,7 +77,7 @@ module.exports = {
   },
   deleteUser: (data, callBack) => {
     db.query(
-      `delete from user where  userID= ?`,
+      `delete from user where userID= ?`,
       [data.userID],
       (error, results, fields) => {
         if (error) {

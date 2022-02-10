@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const { canUpdateUser } = require("../permissions/user.permissions");
+
 module.exports = {
   authUser: (req, res, next) => {
     let token = req.get("authorization");
@@ -22,5 +24,23 @@ module.exports = {
         message: "Access Denied! Unauthorized User",
       });
     }
+  },
+
+  authRole: (role) => {
+    return (req, res, next) => {
+      if (req.decoded.result.role !== role) {
+        res.status(401);
+        return res.send("Not Allowed");
+      }
+      next();
+    };
+  },
+
+  authPermission: (req, res, next) => {
+    if (!canUpdateUser(req)) {
+      res.status(401);
+      return res.send("Not Allowed");
+    }
+    next();
   },
 };
