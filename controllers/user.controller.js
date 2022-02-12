@@ -5,6 +5,7 @@ const {
   getUserByUniId,
   updateUser,
   getUserByUsername,
+  getMaxUserId,
 } = require("../models/user.model");
 const { hashSync, genSaltSync, compareSync } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
@@ -12,6 +13,7 @@ const { sign } = require("jsonwebtoken");
 module.exports = {
   createUser: (req, res) => {
     const body = req.body;
+    body.status = body.status === "admin" ? "inactive" : "active";
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
     create(body, (err, result) => {
@@ -97,6 +99,18 @@ module.exports = {
       return res.json({
         success: 1,
         message: "user deleted successfully",
+      });
+    });
+  },
+  getMaxUserId: (req, res) => {
+    getMaxUserId((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
       });
     });
   },

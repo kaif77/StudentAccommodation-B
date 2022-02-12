@@ -27,13 +27,11 @@ module.exports = {
 
   authRole: (role) => {
     return (req, res, next) => {
-      let valid = false;
-      role.forEach((element) => {
-        if (element === req.decoded.result.role) {
-          valid = true;
-        }
-      });
-      if (!valid) {
+      const userRole = req.decoded.result.role;
+      const result = role
+        .map((role) => role.includes(userRole))
+        .find((val) => val === true);
+      if (!result) {
         res.status(401);
         return res.send("Not Allowed");
       }

@@ -3,7 +3,7 @@ const db = require("../conn/database");
 module.exports = {
   create: (data, callBack) => {
     db.query(
-      `insert into user(userID, uniID, firstName, lastName, address, email, telno, gender, role, profile) values(?,?,?,?,?,?,?,?,?,?,?)`,
+      `insert into user(userID, uniID, firstName, lastName, address, email, telno, gender, role, profile) values(?,?,?,?,?,?,?,?,?,?)`,
       [
         data.userID,
         data.uniID,
@@ -87,7 +87,18 @@ module.exports = {
       }
     );
   },
-
+  getMaxUserId: (callBack) => {
+    db.query(
+      `select * from user ORDER BY userID DESC LIMIT 1`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0].userID);
+      }
+    );
+  },
 
   //this only for login
   getUserByUsername: (username, callBack) => {
