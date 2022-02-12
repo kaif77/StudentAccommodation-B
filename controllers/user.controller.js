@@ -137,6 +137,7 @@ module.exports = {
           success: 1,
           message: "login successfully",
           token: jsontoken,
+          role: results.role,
         });
       } else {
         return res.json({
