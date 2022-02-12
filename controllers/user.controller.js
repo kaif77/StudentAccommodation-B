@@ -16,6 +16,18 @@ module.exports = {
     body.status = body.status === "admin" ? "inactive" : "active";
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
+    getUserByUniId(body.uniID, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (results) {
+        return res.status(500).json({
+          success: 0,
+          message: "UniID Already Used",
+        });
+      }
+    });
     create(body, (err, result) => {
       if (err) {
         console.log(err);

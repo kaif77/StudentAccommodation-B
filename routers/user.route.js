@@ -14,7 +14,7 @@ const { authUser, authRole } = require("../middleware/auth");
 
 router.post("/", createUser);
 router.get("/", authUser, authRole(["admin"]), getUsers);
-router.get("/maxid", authUser, authRole(["admin", "student"]), getMaxUserId);
+router.get("/maxid", getMaxUserId);
 router.get("/:id", authUser, getUserByUniId);
 router.patch("/", authUser, updateUsers);
 router.delete("/", authUser, deleteUser);
