@@ -22,33 +22,32 @@ module.exports = {
         return;
       }
       if (results) {
-        return res.status(500).json({
-          success: 0,
-          message: "UniID Already Used",
+        res.status(500);
+        return res.send("UniID Already Used");
+      } else {
+        create(body, (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: 0,
+              message: "Database connection error",
+            });
+          }
+        });
+        insertlogin(body, (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: 0,
+              message: "Database connection error in login",
+            });
+          }
+          return res.status(200).json({
+            success: 1,
+            data: result,
+          });
         });
       }
-    });
-    create(body, (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection error",
-        });
-      }
-    });
-    insertlogin(body, (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection error in login",
-        });
-      }
-      return res.status(200).json({
-        success: 1,
-        data: result,
-      });
     });
   },
   getUserByUniId: (req, res) => {
