@@ -9,9 +9,9 @@ app.get("/", (req, res) => {
 });
 
 //import user routers
-const userRouters = require("./routers/user.route");
+const roomRouters = require("./routers/room.route");
 
-app.use("/api/user", userRouters);
+app.use("/api/room", roomRouters);
 
 app.listen("3000", () => {
   console.log("Server start on port 3000");

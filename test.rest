@@ -1,0 +1,7 @@
+GET http://localhost:3000/api/room
+
+{
+    "startDate" :"2022-02-12",
+    "endDate":"2022-02-15",
+    "blockID": 1,
+}
