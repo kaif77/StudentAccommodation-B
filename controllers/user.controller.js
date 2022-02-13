@@ -13,7 +13,7 @@ const { sign } = require("jsonwebtoken");
 module.exports = {
   createUser: (req, res) => {
     const body = req.body;
-    body.status = body.status === "admin" ? "inactive" : "active";
+    body.status = body.role === "admin" ? "inactive" : "active";
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
     getUserByUniId(body.uniID, (err, results) => {
@@ -139,7 +139,7 @@ module.exports = {
         });
       }
       const result = compareSync(body.password, results.password);
-      if (result) {
+      if (result && results.status === "active") {
         results.password = undefined;
         const jsontoken = sign({ result: results }, process.env.JWTKEY, {
           expiresIn: "5h",
@@ -151,6 +151,12 @@ module.exports = {
           role: results.role,
         });
       } else {
+        if (results.status !== "active") {
+          return res.json({
+            success: 0,
+            message: "Your Account is inactive",
+          });
+        }
         return res.json({
           success: 0,
           message: "invalid username or password",
