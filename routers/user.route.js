@@ -17,7 +17,7 @@ router.get("/", authUser, authRole(["admin"]), getUsers);
 router.get("/maxid", getMaxUserId);
 router.get("/:id", authUser, getUserByUniId);
 router.patch("/", authUser, updateUsers);
-router.delete("/", authUser, deleteUser);
+router.delete("/", authUser, authRole(["admin"]), deleteUser);
 
 router.post("/login", login);
 

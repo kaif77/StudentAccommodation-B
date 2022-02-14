@@ -1,26 +1,80 @@
 const db = require("../conn/database");
 
 module.exports = {
-  create: (data, callBack) => {
+  addBlock: (data, callBack) => {
     db.query(
-      `insert into user(userID, uniID, firstName, lastName, address, email, gender, role, status, verified) values(?,?,?,?,?,?,?,?,?,?)`,
-      [
-        data.userID,
-        data.uniID,
-        data.firstName,
-        data.lastName,
-        data.address,
-        data.email,
-        data.gender,
-        data.role,
-        data.status,
-        data.verified,
-      ],
+      `insert into block(blockNo, blockName, genderType) values(?,?,?)`,
+      [data.blockNo, data.blockName, data.genderType],
       (error, results, fields) => {
         if (error) {
           return callBack(error);
         }
         return callBack(null, results);
+      }
+    );
+  },
+
+  addRoom: (data, callBack) => {
+    db.query(
+      `insert into room(roomNo, status, blockID) values(?,?,?)`,
+      [data.roomNo, data.status, data.blockID],
+      (error, results, fields) => {
+        if (error) {
+          return callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+
+  updateRoom: (data, callBack) => {
+    db.query(
+      `update room set roomNo=?, status=? where roomId = ?`,
+      [data.roomNo, data.status, data.roomId],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+
+  updateBlock: (data, callBack) => {
+    db.query(
+      `update block set blockNo=?, blockName=?, genderType=? where blockId = ?`,
+      [data.blockNo, data.blockName, data.roomId, data.blockId],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+
+  deleteRoom: (data, callBack) => {
+    db.query(
+      `delete from room where roomID= ?`,
+      [data.roomID],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+
+  deleteBlock: (data, callBack) => {
+    db.query(
+      `delete from block where blockID= ?`,
+      [data.roomID],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
       }
     );
   },

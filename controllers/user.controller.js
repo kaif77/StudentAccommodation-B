@@ -138,6 +138,7 @@ module.exports = {
           message: "invalid username or password",
         });
       }
+
       const result = compareSync(body.password, results.password);
       if (result && results.status === "active") {
         results.password = undefined;
