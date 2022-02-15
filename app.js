@@ -8,6 +8,7 @@ app.use(express.json());
 // ?import user routers
 const userRouters = require("./routers/user.route");
 const roomRouters = require("./routers/room.route");
+const bookingRouters = require("./routers/booking.route");
 
 // !root route
 app.get("/", (req, res) => {
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRouters);
 app.use("/api/room", roomRouters);
+app.use("/api.booking", bookingRouters);
 
 //Middleware for undefined routes
 app.use((req, res) => {
