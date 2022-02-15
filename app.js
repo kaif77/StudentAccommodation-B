@@ -2,12 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-// ?import user routers
-const userRouters = require("./routers/user.route");
-
 // *common middlewares
 app.use(cors());
 app.use(express.json());
+
+// ?import user routers
+const userRouters = require("./routers/user.route");
+const roomRouters = require("./routers/room.route");
 
 // !root route
 app.get("/", (req, res) => {
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRouters);
+app.use("/api/room", roomRouters);
 
 //Middleware for undefined routes
 app.use((req, res) => {

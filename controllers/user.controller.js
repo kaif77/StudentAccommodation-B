@@ -3,7 +3,8 @@ const {
   insertlogin,
   getUsers,
   getUserByUniId,
-  updateUser,
+  updateUser
+  updateLoginUser,
   getUserByUsername,
   getMaxUserId,
 } = require("../models/user.model");
@@ -84,6 +85,19 @@ module.exports = {
   updateUsers: (req, res) => {
     const body = req.body;
     updateUser(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: "updated successfully",
+      });
+    });
+  },
+  updateloginUsers: (req, res) => {
+    const body = req.body;
+    updateLoginUser(body, (err, results) => {
       if (err) {
         console.log(err);
         return;
