@@ -58,7 +58,7 @@ module.exports = {
   },
   updateUser: (data, callBack) => {
     db.query(
-      `update user set firstName=?, lastName=?, address=?, email=?, telno=? where uniId = ?`,
+      `update user set firstName=?, lastName=?, address=?, email=?, telno=? where uniID = ?`,
       [
         data.firstName,
         data.lastName,
@@ -67,6 +67,18 @@ module.exports = {
         data.telno,
         data.uniID,
       ],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+  updateLoginUser: (data, callBack) => {
+    db.query(
+      `update login set password=?, role=?, status=? where userID = ?`,
+      [data.password, data.role, data.status, data.userID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
