@@ -27,6 +27,19 @@ module.exports = {
     );
   },
 
+  getBlockByGender: (genderType, callBack) => {
+    db.query(
+      `select * from block where genderType = ?`,
+      [genderType],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+
   updateRoom: (data, callBack) => {
     db.query(
       `update room set roomNo=?, status=? where roomId = ?`,
