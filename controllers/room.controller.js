@@ -44,7 +44,8 @@ module.exports = {
   },
 
   getBlockByGenderType: (req, res) => {
-    const genderType = req.params.id;
+    const genderType = req.params.genderType;
+    console.log(genderType);
     getBlockByGender(genderType, (err, results) => {
       if (err) {
         console.log(err);
