@@ -12,7 +12,7 @@ const {
 } = require("../controllers/room.controller");
 const { authUser, authRole } = require("../middleware/auth");
 
-router.get("/", authUser, authRole(["admin", "student"]), checkRoomAvalability);
+router.get("/check-room", authUser, authRole(["admin", "student"]), checkRoomAvalability);
 router.post("/add-new-block", authUser, authRole(["admin"]), addNewBlock);
 router.post("/add-new-room", authUser, authRole(["admin"]), addNewRoom);
 router.patch("/update-room", authUser, authRole(["admin"]), updateRoomDeatils);
