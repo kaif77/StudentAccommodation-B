@@ -81,11 +81,11 @@ module.exports = {
 
   checkAvalability: (data, callBack) => {
     db.query(
-      `SELECT roomNo FROM room WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=? AND b.endDate>?) OR (b.startDate>? AND b.endDate<=?)) AND blockID=?`,
+      `SELECT roomNo FROM room WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=? AND b.endDate>?) OR (b.startDate<? AND b.endDate>=?)) AND blockID=?`,
       [
         data.startDate,
-        data.endDate,
         data.startDate,
+        data.endDate,
         data.endDate,
         data.blockID,
       ],
