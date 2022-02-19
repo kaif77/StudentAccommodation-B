@@ -15,8 +15,8 @@ const { authUser, authRole } = require("../middleware/auth");
 
 router.post(
   "/check-room",
-  authUser,
-  authRole(["admin", "student"]),
+  // authUser,
+  // authRole(["admin", "student"]),
   checkRoomAvalability
 );
 router.post("/add-new-block", authUser, authRole(["admin"]), addNewBlock);

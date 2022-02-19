@@ -42,7 +42,7 @@ module.exports = {
 
   updateRoom: (data, callBack) => {
     db.query(
-      `update room set roomNo=?, status=? where roomId = ?`,
+      `update room set roomNo=?, status=? where roomID = ?`,
       [data.roomNo, data.status, data.roomId],
       (error, results, fields) => {
         if (error) {
@@ -55,8 +55,8 @@ module.exports = {
 
   updateBlock: (data, callBack) => {
     db.query(
-      `update block set blockNo=?, blockName=?, genderType=? where blockId = ?`,
-      [data.blockNo, data.blockName, data.roomId, data.blockId],
+      `update block set blockNo=?, blockName=?, genderType=? where blockID = ?`,
+      [data.blockNo, data.blockName, data.roomId, data.blockID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -94,7 +94,7 @@ module.exports = {
 
   checkAvalability: (data, callBack) => {
     db.query(
-      `SELECT roomNo FROM room WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=? AND b.endDate>?) OR (b.startDate<? AND b.endDate>=?)) AND blockID=?`,
+      `SELECT room.*,block.* FROM room inner join block on block.blockID=room.blockID WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=? AND b.endDate>?) OR (b.startDate<? AND b.endDate>=?)) AND room.blockID=?`,
       [
         data.startDate,
         data.startDate,
