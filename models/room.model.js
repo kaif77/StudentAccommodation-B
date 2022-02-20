@@ -26,6 +26,22 @@ module.exports = {
       }
     );
   },
+  getRoom: (callBack) => {
+    db.query(`select * from room`, [], (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+      return callBack(null, results);
+    });
+  },
+  getBlock: (callBack) => {
+    db.query(`select * from block`, [], (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+      return callBack(null, results);
+    });
+  },
 
   getBlockByGender: (genderType, callBack) => {
     db.query(
@@ -42,8 +58,8 @@ module.exports = {
 
   updateRoom: (data, callBack) => {
     db.query(
-      `update room set roomNo=?, status=? where roomID = ?`,
-      [data.roomNo, data.status, data.roomId],
+      `update room set roomNo=?, status=?,blockID = ? where roomID = ?`,
+      [data.roomNo, data.status, data.blockID, data.roomId],
       (error, results, fields) => {
         if (error) {
           callBack(error);

@@ -10,17 +10,21 @@ const {
   deleteRoomDeatils,
   deleteBlockDeatils,
   getBlockByGenderType,
+  getRooms,
+  getBlocks,
 } = require("../controllers/room.controller");
 const { authUser, authRole } = require("../middleware/auth");
 
 router.post(
   "/check-room",
-  // authUser,
-  // authRole(["admin", "student"]),
+  authUser,
+  authRole(["admin", "student"]),
   checkRoomAvalability
 );
 router.post("/add-new-block", authUser, authRole(["admin"]), addNewBlock);
 router.post("/add-new-room", authUser, authRole(["admin"]), addNewRoom);
+router.get("/get-room", authUser, authRole(["admin"]), getRooms);
+router.get("/get-block", authUser, authRole(["admin"]), getBlocks);
 router.get(
   "/:genderType",
   authUser,

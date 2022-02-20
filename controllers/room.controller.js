@@ -7,6 +7,8 @@ const {
   updateRoom,
   deleteBlock,
   deleteRoom,
+  getRoom,
+  getBlock,
 } = require("../models/room.model");
 
 module.exports = {
@@ -43,9 +45,34 @@ module.exports = {
     });
   },
 
+  getRooms: (req, res) => {
+    getRoom((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
+  getBlocks: (req, res) => {
+    getBlock((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
   getBlockByGenderType: (req, res) => {
     const genderType = req.params.genderType;
-    console.log(genderType);
     getBlockByGender(genderType, (err, results) => {
       if (err) {
         console.log(err);
