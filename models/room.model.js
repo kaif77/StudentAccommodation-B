@@ -27,12 +27,16 @@ module.exports = {
     );
   },
   getRoom: (callBack) => {
-    db.query(`select * from room`, [], (error, results, fields) => {
-      if (error) {
-        callBack(error);
+    db.query(
+      `select r.*,b.blockName from room r inner join block b on r.blockID=b.blockID`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
       }
-      return callBack(null, results);
-    });
+    );
   },
   getBlock: (callBack) => {
     db.query(`select * from block`, [], (error, results, fields) => {
