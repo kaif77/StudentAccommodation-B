@@ -47,6 +47,19 @@ module.exports = {
     );
   },
 
+  getLastBookingByUser: (data, callBack) => {
+    db.query(
+      `select count(*) as count from roombooking where ?>(select max(endDate) from roombooking where uniID=?)`,
+      [data.startDate, data.uniID],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+
   updatebooking: (data, callBack) => {
     db.query(
       `update user set roomId=?, startDate=?, endDate=?, payment=?, totalyPaid=?, status=? where uniID = ?`,

@@ -3,23 +3,37 @@ const {
   getBooking,
   getBookingByuniId,
   updatebooking,
+  getLastBookingByUser,
 } = require("../models/booking.models");
 
 module.exports = {
   addNewBooking: (req, res) => {
     const body = req.body;
-    addBooking(body, (err, result) => {
+    getLastBookingByUser(body, (err, result) => {
       if (err) {
         console.log(err);
-        return res.status(500).json({
+        return;
+      }
+      if (result.count > 0) {
+        return res.json({
           success: 0,
-          message: "Database connection error",
+          message: "Already has a Booking",
+        });
+      } else {
+        addBooking(body, (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: 0,
+              message: "Database connection error",
+            });
+          }
+          return res.status(200).json({
+            success: 1,
+            data: result,
+          });
         });
       }
-      return res.status(200).json({
-        success: 1,
-        data: result,
-      });
     });
   },
   getbookingByUniId: (req, res) => {
