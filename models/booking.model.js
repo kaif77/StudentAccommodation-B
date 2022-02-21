@@ -49,7 +49,7 @@ module.exports = {
 
   getLastBookingByUser: (data, callBack) => {
     db.query(
-      `select count(*) as count from roombooking where ?>(select max(endDate) from roombooking where uniID=?)`,
+      `select count(*) as count from roombooking where ?<(select max(endDate) from roombooking where uniID=?)`,
       [data.startDate, data.uniID],
       (error, results, fields) => {
         if (error) {

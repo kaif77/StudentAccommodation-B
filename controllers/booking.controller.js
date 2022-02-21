@@ -4,7 +4,8 @@ const {
   getBookingByuniId,
   updatebooking,
   getLastBookingByUser,
-} = require("../models/booking.models");
+} = require("../models/booking.model");
+const { addPayment } = require("../models/payment.model");
 
 module.exports = {
   addNewBooking: (req, res) => {
@@ -27,11 +28,25 @@ module.exports = {
               success: 0,
               message: "Database connection error",
             });
+          } else {
+            body.bookingID = result.insertId;
+            body.payAmount = 0;
+            body.dueAmount = body.payment;
+            body.date = new Date();
+            addPayment(body, (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json({
+                  success: 0,
+                  message: "Database connection error",
+                });
+              }
+              return res.status(200).json({
+                success: 1,
+                data: result,
+              });
+            });
           }
-          return res.status(200).json({
-            success: 1,
-            data: result,
-          });
         });
       }
     });
