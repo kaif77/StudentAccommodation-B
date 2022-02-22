@@ -76,7 +76,7 @@ module.exports = {
   updateBlock: (data, callBack) => {
     db.query(
       `update block set blockNo=?, blockName=?, genderType=? where blockID = ?`,
-      [data.blockNo, data.blockName, data.roomId, data.blockID],
+      [data.blockNo, data.blockName, data.genderType, data.blockID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -86,10 +86,10 @@ module.exports = {
     );
   },
 
-  deleteRoom: (data, callBack) => {
+  deleteRoom: (id, callBack) => {
     db.query(
       `delete from room where roomID= ?`,
-      [data.roomID],
+      [id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -99,10 +99,10 @@ module.exports = {
     );
   },
 
-  deleteBlock: (data, callBack) => {
+  deleteBlock: (id, callBack) => {
     db.query(
       `delete from block where blockID= ?`,
-      [data.roomID],
+      [id],
       (error, results, fields) => {
         if (error) {
           callBack(error);

@@ -119,8 +119,8 @@ module.exports = {
   },
 
   deleteRoomDeatils: (req, res) => {
-    const data = req.body;
-    deleteRoom(data, (err, results) => {
+    const id = req.params.id;
+    deleteRoom(id, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -139,8 +139,8 @@ module.exports = {
   },
 
   deleteBlockDeatils: (req, res) => {
-    const data = req.body;
-    deleteBlock(data, (err, results) => {
+    const id = req.params.id;
+    deleteBlock(id, (err, results) => {
       if (err) {
         console.log(err);
         return;

@@ -4,6 +4,7 @@ const {
   getBookingByuniId,
   updatebooking,
   getLastBookingByUser,
+  getAllBooking,
 } = require("../models/booking.model");
 const { addPayment } = require("../models/payment.model");
 
@@ -82,6 +83,20 @@ module.exports = {
       });
     });
   },
+
+  getAllBooking: (req, res) => {
+    getAllBooking((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
   updatebooking: (req, res) => {
     const body = req.body;
     updatebooking(body, (err, results) => {

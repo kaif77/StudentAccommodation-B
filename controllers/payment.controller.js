@@ -1,6 +1,10 @@
 const {
   getBookingforPayment,
   getLastPaymentbyUniID,
+  addPayment,
+  updateTotalyPaid,
+  getPaidPaymentbyUniID,
+  getDuePaymentbyUniID,
 } = require("../models/payment.model");
 
 module.exports = {
@@ -26,7 +30,27 @@ module.exports = {
 
   getPaidPaymentByUniId: (req, res) => {
     const id = req.params.id;
-    this.getPaidPaymentByUniId(id, (err, results) => {
+    getPaidPaymentbyUniID(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record not Found",
+        });
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
+  getDuePaymentbyUniID: (req, res) => {
+    const id = req.params.id;
+    getDuePaymentbyUniID(id, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -65,10 +89,21 @@ module.exports = {
               message: "Database connection error",
             });
           }
-          return res.status(200).json({
-            success: 1,
-            data: result,
-          });
+          if (body.dueAmount <= 0) {
+            updateTotalyPaid(body, (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json({
+                  success: 0,
+                  message: "Database connection error",
+                });
+              }
+              return res.status(200).json({
+                success: 1,
+                data: result,
+              });
+            });
+          }
         });
       }
     });

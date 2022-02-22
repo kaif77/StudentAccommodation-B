@@ -34,9 +34,22 @@ module.exports = {
       }
     );
   },
+
+  getAllBooking: (callBack) => {
+    db.query(
+      `SELECT b.bookingID, b.uniID, b.startDate,b.endDate, b.payment, r.roomNo FROM roombooking b INNER JOIN room r ON b.roomID=r.roomID`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
   getBookingByuniId: (id, callBack) => {
     db.query(
-      `select * from roombooking where uniID = ?`,
+      `select rb.*,b.blockName,r.roomNo from roombooking rb inner join room r on r.roomID = rb.roomID INNER join block b ON b.blockID = r.blockID where uniID=?`,
       [id],
       (error, results, fields) => {
         if (error) {

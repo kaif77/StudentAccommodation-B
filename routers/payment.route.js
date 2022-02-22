@@ -5,11 +5,23 @@ const {
   getPaymentByUniId,
   addNewPaymet,
   getPaidPaymentByUniId,
+  getDuePaymentbyUniID,
 } = require("../controllers/payment.controller");
 const { authUser, authRole } = require("../middleware/auth");
 
-router.get("/payment/:id", getPaymentByUniId);
-router.get("/paid/:id", getPaidPaymentByUniId);
-router.post("/", addNewPaymet);
+router.get("/payment/:id", authUser, authRole(["admin"]), getPaymentByUniId);
+router.get(
+  "/paid/:id",
+  authUser,
+  authRole(["admin", "student"]),
+  getPaidPaymentByUniId
+);
+router.get(
+  "/due/:id",
+  authUser,
+  authRole(["admin", "student"]),
+  getDuePaymentbyUniID
+);
+router.post("/", authUser, authRole(["admin"]), addNewPaymet);
 
 module.exports = router;
