@@ -3,12 +3,13 @@ const router = express.Router();
 
 const {
   getPaymentByUniId,
+  getAllPayments,
   addNewPaymet,
   getPaidPaymentByUniId,
   getDuePaymentbyUniID,
 } = require("../controllers/payment.controller");
 const { authUser, authRole } = require("../middleware/auth");
-
+router.get("/get-all", authUser, authRole(["admin"]), getAllPayments);
 router.get("/payment/:id", authUser, authRole(["admin"]), getPaymentByUniId);
 router.get(
   "/paid/:id",

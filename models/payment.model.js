@@ -3,8 +3,20 @@ const db = require("../conn/database");
 module.exports = {
   getBookingforPayment: (id, callBack) => {
     db.query(
-      `select rb.*,p.* from roombooking rb inner join payment p on p.uniID=rb.uniID where rb.totalyPaid='no' and rb.status = 'confirm' and p.paymentID = (SELECT MAX(paymentID) from payment where uniID=?) and rb.bookingID=p.bookingID`,
+      `select r.*,p.dueAmount from roombooking r inner join payment p on p.bookingID=r.bookingID where totalyPaid='no' and r.status='confirm'  and r.uniID=? and p.paymentID=(select max(paymentID) from payment where uniID=r.uniID and bookingID=r.bookingID)`,
       [id],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  getAllPayment: (callBack) => {
+    db.query(
+      `select * from payment`,
+      [],
       (error, results, fields) => {
         if (error) {
           callBack(error);

@@ -2,7 +2,7 @@ const {
   addBooking,
   getBooking,
   getBookingByuniId,
-  updatebooking,
+  updatebookingStatus,
   getLastBookingByUser,
   getAllBooking,
 } = require("../models/booking.model");
@@ -97,9 +97,9 @@ module.exports = {
     });
   },
 
-  updatebooking: (req, res) => {
+  updatebookingStatus: (req, res) => {
     const body = req.body;
-    updatebooking(body, (err, results) => {
+    updatebookingStatus(body, (err, results) => {
       if (err) {
         console.log(err);
         return;

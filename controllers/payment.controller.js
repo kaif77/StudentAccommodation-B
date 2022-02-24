@@ -1,5 +1,6 @@
 const {
   getBookingforPayment,
+  getAllPayment,
   getLastPaymentbyUniID,
   addPayment,
   updateTotalyPaid,
@@ -20,6 +21,19 @@ module.exports = {
           success: 0,
           message: "Record not Found",
         });
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
+  getAllPayments: (req, res) => {
+    getAllPayment((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
       }
       return res.json({
         success: 1,

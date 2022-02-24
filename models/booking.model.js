@@ -24,7 +24,7 @@ module.exports = {
 
   getBooking: (callBack) => {
     db.query(
-      `SELECT b.bookingID, b.uniID, b.startDate,b.endDate, b.payment, r.roomNo FROM roombooking b INNER JOIN room r ON b.roomID=r.roomID WHERE b.status = 'pending'`,
+      `SELECT b.bookingID,r.blockID, b.uniID, b.startDate,b.endDate, b.payment, r.roomNo FROM roombooking b INNER JOIN room r ON b.roomID=r.roomID WHERE b.status = 'pending'`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -73,17 +73,12 @@ module.exports = {
     );
   },
 
-  updatebooking: (data, callBack) => {
+  updatebookingStatus: (data, callBack) => {
     db.query(
-      `update user set roomId=?, startDate=?, endDate=?, payment=?, totalyPaid=?, status=? where uniID = ?`,
+      `update roombooking set status=? where bookingID = ?`,
       [
-        data.roomId,
-        data.startDate,
-        data.endDate,
-        data.payment,
-        data.totalyPaid,
         data.status,
-        data.uniID,
+        data.bookingID,
       ],
       (error, results, fields) => {
         if (error) {
