@@ -10,20 +10,20 @@ const { authUser, authRole } = require("../middleware/auth");
 
 router.get(
   "/booking-count-today",
-  //   authUser,
-  //   authRole(["admin"]),
+    authUser,
+    authRole(["admin"]),
   getRoomBookingCount
 );
 router.get(
   "/booking-request-count",
-  //   authUser,
-  //   authRole(["admin"]),
+    authUser,
+    authRole(["admin"]),
   getBookingRequestCount
 );
 router.get(
   "/abailable-room-count",
-  //   authUser,
-  //   authRole(["admin"]),
+    authUser,
+    authRole(["admin"]),
   getFreeRoomCount
 );
 
