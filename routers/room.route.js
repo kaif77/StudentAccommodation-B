@@ -38,7 +38,12 @@ router.patch(
   authRole(["admin"]),
   updateBlockDeatils
 );
-router.delete("/delete-room/:id", authUser, authRole(["admin"]), deleteRoomDeatils);
+router.delete(
+  "/delete-room/:id",
+  authUser,
+  authRole(["admin"]),
+  deleteRoomDeatils
+);
 router.delete(
   "/delete-block/:id",
   authUser,

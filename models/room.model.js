@@ -94,7 +94,7 @@ module.exports = {
         if (error) {
           callBack(error);
         }
-        return callBack(null, results[0]);
+        return callBack(null, results);
       }
     );
   },
@@ -107,7 +107,7 @@ module.exports = {
         if (error) {
           callBack(error);
         }
-        return callBack(null, results[0]);
+        return callBack(null, results);
       }
     );
   },
