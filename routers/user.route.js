@@ -45,7 +45,7 @@ router.patch(
   authRole(["admin"]),
   updateloginPassword
 );
-router.delete("/", authUser, authRole(["admin"]), deleteUser);
+router.delete("/:id", authUser, authRole(["admin"]), deleteUser);
 
 router.post("/login", login);
 

@@ -29,7 +29,7 @@ module.exports = {
 
   getFreeRoomCount: (callBack) => {
     db.query(
-      `SELECT COUNT(*) as count FROM room inner join block on block.blockID=room.blockID WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<='now()' AND b.endDate>'now()') OR (b.startDate<'now()' AND b.endDate>='now()'))`,
+      `SELECT COUNT(*) as count FROM room inner join block on block.blockID=room.blockID WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=now() AND b.endDate>now()) OR (b.startDate<now() AND b.endDate>=now()))`,
       [],
       (error, results, fields) => {
         if (error) {
