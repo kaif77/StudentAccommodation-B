@@ -37,7 +37,7 @@ module.exports = {
 
   getAllBooking: (callBack) => {
     db.query(
-      `SELECT b.bookingID, b.uniID, b.startDate,b.endDate, b.payment, r.roomNo FROM roombooking b INNER JOIN room r ON b.roomID=r.roomID`,
+      `SELECT b.bookingID, b.uniID,r.roomID,r.blockID, b.startDate,b.endDate, b.payment, r.roomNo FROM roombooking b INNER JOIN room r ON b.roomID=r.roomID`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -76,10 +76,7 @@ module.exports = {
   updatebookingStatus: (data, callBack) => {
     db.query(
       `update roombooking set status=? where bookingID = ?`,
-      [
-        data.status,
-        data.bookingID,
-      ],
+      [data.status, data.bookingID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
