@@ -22,8 +22,6 @@ router.get(
 );
 router.get(
   "/abailable-room-count",
-    authUser,
-    authRole(["admin"]),
   getFreeRoomCount
 );
 
