@@ -10,6 +10,8 @@ app.use(express.json());
 const userRouters = require("./routers/user.route");
 const roomRouters = require("./routers/room.route");
 const bookingRouters = require("./routers/booking.route");
+const paymentRouters = require("./routers/payment.route");
+const dashboardRouters = require("./routers/dashboard.route");
 
 // !root route
 app.get("/", (req, res) => {
@@ -18,13 +20,15 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRouters);
 app.use("/api/room", roomRouters);
-app.use("/api.booking", bookingRouters);
+app.use("/api/booking", bookingRouters);
+app.use("/api/payment", paymentRouters);
+app.use("/api/dashboard", dashboardRouters);
 
 //Middleware for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: { massage: "Not found!" } });
 });
 
-app.listen("3000", () => {
-  console.log("Server start on port 3000");
+app.listen("3002", () => {
+  console.log("Server start on port 3002");
 });

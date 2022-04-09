@@ -44,6 +44,16 @@ module.exports = {
       return callBack(null, results);
     });
   },
+
+  getUsersFromLogin: (callBack) => {
+    db.query(`select * from login`, [], (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+      return callBack(null, results);
+    });
+  },
+
   getUserByUniId: (id, callBack) => {
     db.query(
       `select * from user where uniID = ?`,
@@ -75,10 +85,11 @@ module.exports = {
       }
     );
   },
-  updateLoginUser: (data, callBack) => {
+
+  updateUserProfile: (data, callBack) => {
     db.query(
-      `update login set password=?, role=?, status=? where userID = ?`,
-      [data.password, data.role, data.status, data.userID],
+      `update user set profile = ? where uniID = ?`,
+      [data.profile, data.uniID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -87,10 +98,36 @@ module.exports = {
       }
     );
   },
-  deleteUser: (data, callBack) => {
+
+  updateLoginStatus: (data, callBack) => {
+    db.query(
+      `update login set status=? where userID = ?`,
+      [data.status, data.userID],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+
+  updateLoginPassword: (data, callBack) => {
+    db.query(
+      `update login set password=? where userID = ?`,
+      [data.password, data.userID],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+  deleteUser: (id, callBack) => {
     db.query(
       `delete from user where userID= ?`,
-      [data.userID],
+      [id],
       (error, results, fields) => {
         if (error) {
           callBack(error);

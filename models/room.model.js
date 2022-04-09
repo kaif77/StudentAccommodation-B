@@ -26,11 +26,44 @@ module.exports = {
       }
     );
   },
+  getRoom: (callBack) => {
+    db.query(
+      `select r.*,b.blockName from room r inner join block b on r.blockID=b.blockID`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  getBlock: (callBack) => {
+    db.query(`select * from block`, [], (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+      return callBack(null, results);
+    });
+  },
+
+  getBlockByGender: (genderType, callBack) => {
+    db.query(
+      `select * from block where genderType = ?`,
+      [genderType],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
 
   updateRoom: (data, callBack) => {
     db.query(
-      `update room set roomNo=?, status=? where roomId = ?`,
-      [data.roomNo, data.status, data.roomId],
+      `update room set roomNo=?, status=?,blockID = ? where roomID = ?`,
+      [data.roomNo, data.status, data.blockID, data.roomId],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -42,8 +75,8 @@ module.exports = {
 
   updateBlock: (data, callBack) => {
     db.query(
-      `update block set blockNo=?, blockName=?, genderType=? where blockId = ?`,
-      [data.blockNo, data.blockName, data.roomId, data.blockId],
+      `update block set blockNo=?, blockName=?, genderType=? where blockID = ?`,
+      [data.blockNo, data.blockName, data.genderType, data.blockID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -53,39 +86,39 @@ module.exports = {
     );
   },
 
-  deleteRoom: (data, callBack) => {
+  deleteRoom: (id, callBack) => {
     db.query(
       `delete from room where roomID= ?`,
-      [data.roomID],
+      [id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
         }
-        return callBack(null, results[0]);
+        return callBack(null, results);
       }
     );
   },
 
-  deleteBlock: (data, callBack) => {
+  deleteBlock: (id, callBack) => {
     db.query(
       `delete from block where blockID= ?`,
-      [data.roomID],
+      [id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
         }
-        return callBack(null, results[0]);
+        return callBack(null, results);
       }
     );
   },
 
   checkAvalability: (data, callBack) => {
     db.query(
-      `SELECT roomNo FROM room WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE (b.startDate<=? AND b.endDate>?) OR (b.startDate>? AND b.endDate<=?)) AND blockID=?`,
+      `SELECT room.*,block.* FROM room inner join block on block.blockID=room.blockID WHERE room.roomID NOT IN (SELECT r.roomid FROM roombooking b INNER JOIN room r ON b.roomID = r.roomID WHERE b.status!='rejected' and (b.startDate<=? AND b.endDate>?) OR (b.startDate<? AND b.endDate>=?)) AND room.blockID=?`,
       [
         data.startDate,
-        data.endDate,
         data.startDate,
+        data.endDate,
         data.endDate,
         data.blockID,
       ],

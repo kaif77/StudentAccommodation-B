@@ -2,10 +2,13 @@ const {
   checkAvalability,
   addBlock,
   addRoom,
+  getBlockByGender,
   updateBlock,
   updateRoom,
   deleteBlock,
   deleteRoom,
+  getRoom,
+  getBlock,
 } = require("../models/room.model");
 
 module.exports = {
@@ -41,6 +44,53 @@ module.exports = {
       });
     });
   },
+
+  getRooms: (req, res) => {
+    getRoom((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
+  getBlocks: (req, res) => {
+    getBlock((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
+  getBlockByGenderType: (req, res) => {
+    const genderType = req.params.genderType;
+    getBlockByGender(genderType, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record not Found",
+        });
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
   updateBlockDeatils: (req, res) => {
     const body = req.body;
     updateBlock(body, (err, results) => {
@@ -69,8 +119,8 @@ module.exports = {
   },
 
   deleteRoomDeatils: (req, res) => {
-    const data = req.body;
-    deleteRoom(data, (err, results) => {
+    const id = req.params.id;
+    deleteRoom(id, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -89,8 +139,8 @@ module.exports = {
   },
 
   deleteBlockDeatils: (req, res) => {
-    const data = req.body;
-    deleteBlock(data, (err, results) => {
+    const id = req.params.id;
+    deleteBlock(id, (err, results) => {
       if (err) {
         console.log(err);
         return;

@@ -3,10 +3,13 @@ const {
   insertlogin,
   getUsers,
   getUserByUniId,
-  updateUser
-  updateLoginUser,
+  updateUser,
   getUserByUsername,
   getMaxUserId,
+  getUsersFromLogin,
+  updateLoginStatus,
+  updateLoginPassword,
+  updateUserProfile,
 } = require("../models/user.model");
 const { hashSync, genSaltSync, compareSync } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
@@ -82,6 +85,20 @@ module.exports = {
       });
     });
   },
+
+  getUsersFromLogin: (req, res) => {
+    getUsersFromLogin((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+
   updateUsers: (req, res) => {
     const body = req.body;
     updateUser(body, (err, results) => {
@@ -95,9 +112,10 @@ module.exports = {
       });
     });
   },
-  updateloginUsers: (req, res) => {
+
+  updateUserProfile: (req, res) => {
     const body = req.body;
-    updateLoginUser(body, (err, results) => {
+    updateUserProfile(body, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -108,9 +126,40 @@ module.exports = {
       });
     });
   },
+
+  updateloginStatus: (req, res) => {
+    const body = req.body;
+    updateLoginStatus(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: "updated successfully",
+      });
+    });
+  },
+
+  updateloginPassword: (req, res) => {
+    const body = req.body;
+    const salt = genSaltSync(10);
+    body.password = hashSync(body.password, salt);
+    updateLoginPassword(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: "updated successfully",
+      });
+    });
+  },
+
   deleteUser: (req, res) => {
-    const data = req.body;
-    deleteUser(data, (err, results) => {
+    const id = req.params.id;
+    deleteUser(id, (err, results) => {
       if (err) {
         console.log(err);
         return;
